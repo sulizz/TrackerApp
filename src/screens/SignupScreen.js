@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { View, StyleSheet } from "react-native";
 import { Input, Text, Button } from "react-native-elements";
 import Spacer from "../components/Spacer";
+import { Context as AuthContext } from "../context/AuthContext";
 
 //morning --> 4am - 12pm
 //afternoon --> 12pm - 5pm
@@ -23,7 +24,8 @@ const greeting = () => {
 };
 
 const SignupScreen = ({ navigation }) => {
-    const [username, setUsername] = useState("");
+    const { state, signup } = useContext(AuthContext);
+    const [email, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [greetings, setGreetings] = useState("hi");
 
@@ -34,20 +36,19 @@ const SignupScreen = ({ navigation }) => {
 
     return (
         <View style={styles.container}>
-            <Text h3>{greeting()}</Text>
+            <Text h3>{greetings}</Text>
             <Spacer />
             <Spacer>
                 <Text h3>Sign Up</Text>
             </Spacer>
             <Input
                 placeholder="Email"
-                value={username}
+                value={email}
                 autoCapitalize="none"
                 autoCorrect={false}
                 onChangeText={(newValue) => setUsername(newValue)}
                 // errorMessage="ENTER A VALID ERROR HERE"
             />
-            <Text>{username}</Text>
             <Input
                 placeholder="Password"
                 secureTextEntry={true}
@@ -60,7 +61,7 @@ const SignupScreen = ({ navigation }) => {
             />
             <Button
                 title="Sign Up"
-                onPress={() => console.log(username, password)}
+                onPress={() => signup({ email, password })}
                 style={styles.signUpButtonStyle}
             />
             <Spacer />
