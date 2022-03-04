@@ -13,14 +13,26 @@ import TrackCreateScreen from "./src/screens/TrackCreateScreen";
 import TrackDetailsScreen from "./src/screens/TrackDetailsScreen";
 import TrackListScreen from "./src/screens/TrackListScreen";
 
+import { Provider as AuthProvider } from "./src/context/AuthContext";
 //top level navigation createSwitchNavigator which goes between or login flow or main flow
 const switchNavigator = createSwitchNavigator({
     //another grouping of screens, (another navigator)
     //createStackNavigator is a sub navigator
-    loginFlow: createStackNavigator({
-        Signup: SignupScreen,
-        Signin: SigninScreen,
-    }),
+    loginFlow: createStackNavigator(
+        {
+            Signup: SignupScreen,
+            Signin: SigninScreen,
+        },
+        {
+            defaultNavigationOptions: {
+                title: "",
+            },
+            // headerMode: "none",
+            // navigationOptions: {
+            //     headerVisible: false,
+            // },
+        }
+    ),
 
     mainFlow: createBottomTabNavigator({
         trackListFlow: createStackNavigator({
@@ -32,4 +44,12 @@ const switchNavigator = createSwitchNavigator({
     }),
 });
 
-export default createAppContainer(switchNavigator);
+const App = createAppContainer(switchNavigator);
+
+export default () => {
+    return (
+        <AuthProvider>
+            <App />
+        </AuthProvider>
+    );
+};
