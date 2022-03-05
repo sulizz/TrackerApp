@@ -1,21 +1,25 @@
-import React from "react";
-import { StyleSheet } from "react-native";
-import { Input, Icon, Text } from "react-native-elements";
-const SigninScreen = () => {
+import React, { useContext, useState } from "react";
+import AuthForm from "../components/AuthForm";
+import { Context as AuthContext } from "../context/AuthContext";
+
+const SigninScreen = ({ navigation }) => {
+    const { state, signin } = useContext(AuthContext);
+
     return (
-        <>
-            <Text h3>Sign In</Text>
-            <Input
-                placeholder="Username"
-                // errorMessage="ENTER A VALID ERROR HERE"
-            />
-            <Input
-                placeholder="Password"
-                secureTextEntry={true}
-                // errorMessage="ENTER A VALID ERROR HERE"
-            />
-        </>
+        <AuthForm
+            title="Sign In"
+            state={state}
+            onSubmit={({ email, password }) => signin({ email, password })}
+            navigation={navigation}
+            screenName={"Signup"}
+            buttonTitle="Don't have a account yet? Sign Up"
+        />
     );
 };
-const styles = StyleSheet.create({});
+
+SigninScreen.navigationOptions = () => {
+    return {
+        headerShown: false,
+    };
+};
 export default SigninScreen;

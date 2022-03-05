@@ -1,10 +1,20 @@
-import { RecyclerViewBackedScrollViewComponent } from "react-native";
 import createDataContext from "./createDataContext";
 import trackerApi from "../api/tracker";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { navigate } from "../navigationRef";
 
 //reducer that changes the state
 const authReducer = (state, action) => {
     switch (action.type) {
+        case "add_error":
+            return { ...state, errorMessage: action.payload };
+        case "signup":
+            //if user signs up with email which gets error, then logs in successfully.
+            //to remove the error msg we re-build our state obj so instead of ...state which copies data
+            //errorMessage: "" which changes the error to empty string
+            return { errorMessage: "", token: action.payload };
+        case "signin":
+            return { errorMessage: "", token: action.payload };
         default:
             return state;
     }
@@ -33,18 +43,39 @@ const signup = (dispatch) => {
                 email,
                 password,
             });
-            console.log(response.data);
+            await AsyncStorage.setItem("token", response.data.token); // #1save it in local storage
+            dispatch({ type: "signup", payload: response.data.token }); // #2 dispatch the action
+            console.log("navigating to mainflow");
+            navigate("TrackList"); // #3 navigate user to new flow
         } catch (err) {
-            console.log(err.message);
+            dispatch({
+                type: "add_error",
+                payload: "Something went wrong here with error message",
+            });
         }
     };
 };
 
 const signin = (dispatch) => {
-    return ({ email, password }) => {
-        //try to sign in
-        //handle success by updating state
-        //error
+    return async ({ email, password }) => {
+        console.log(email, password, "received");
+        //make api call
+        try {
+            const response = await trackerApi.post("/signin", {
+                email: email,
+                password: password,
+            });
+            //save data in local storage
+            // await AsyncStorage.setItem("token", response.data.token);
+            //dispatch
+            dispatch({ type: "signin", payload: response.data.token });
+            navigate("TrackList");
+        } catch (err) {
+            dispatch({
+                type: "add_error",
+                payload: "Username or Password Incorrect",
+            });
+        }
     };
 };
 
@@ -57,5 +88,5 @@ const signout = (dispatch) => {
 export const { Provider, Context } = createDataContext(
     authReducer,
     { signup: signup, signin: signin, signout: signout },
-    { isSignedIn: false }
+    { token: null, errorMessage: "" }
 );
