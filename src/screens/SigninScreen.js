@@ -1,6 +1,4 @@
 import React, { useContext, useState } from "react";
-import { View } from "react-native";
-import { Text } from "react-native-elements";
 import AuthForm from "../components/AuthForm";
 import { Context as AuthContext } from "../context/AuthContext";
 
@@ -19,6 +17,7 @@ const SigninScreen = ({ navigation }) => {
             setEmail={setEmail}
             setPassword={setPassword}
             navigation={navigation}
+            screenName={"Signup"}
             buttonTitle="Don't have a account yet? Sign Up"
         />
     );

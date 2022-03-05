@@ -1,7 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
-import { View, StyleSheet, TouchableOpacity } from "react-native";
-import { Input, Text, Button } from "react-native-elements";
-import Spacer from "../components/Spacer";
+import React, { useContext, useState } from "react";
 import { Context as AuthContext } from "../context/AuthContext";
 import AuthForm from "../components/AuthForm";
 
@@ -20,6 +17,7 @@ const SignupScreen = ({ navigation }) => {
             setEmail={setEmail}
             setPassword={setPassword}
             navigation={navigation}
+            screenName={"Signin"}
             buttonTitle="Already have an account? Sign in"
         />
     );
@@ -31,23 +29,4 @@ SignupScreen.navigationOptions = () => {
         headerShown: false,
     };
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1, //to take over all the possible
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 200,
-    },
-    signUpButtonStyle: {
-        borderRadius: 30,
-        width: 220,
-        marginVertical: 10,
-    },
-
-    errorMessage: {
-        color: "red",
-    },
-});
-
 export default SignupScreen;
