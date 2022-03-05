@@ -4,18 +4,12 @@ import { Context as AuthContext } from "../context/AuthContext";
 
 const SigninScreen = ({ navigation }) => {
     const { state, signin } = useContext(AuthContext);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
 
     return (
         <AuthForm
             title="Sign In"
-            email={email}
-            password={password}
             state={state}
-            action={signin}
-            setEmail={setEmail}
-            setPassword={setPassword}
+            onSubmit={({ email, password }) => signin({ email, password })}
             navigation={navigation}
             screenName={"Signup"}
             buttonTitle="Don't have a account yet? Sign Up"

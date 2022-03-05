@@ -4,19 +4,13 @@ import AuthForm from "../components/AuthForm";
 
 const SignupScreen = ({ navigation }) => {
     const { state, signup } = useContext(AuthContext);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
 
     return (
         <AuthForm
             title="Sign Up"
-            email={email}
-            password={password}
             state={state}
-            action={signup}
-            setEmail={setEmail}
-            setPassword={setPassword}
             navigation={navigation}
+            onSubmit={({ email, password }) => signup({ email, password })}
             screenName={"Signin"}
             buttonTitle="Already have an account? Sign in"
         />

@@ -11,15 +11,15 @@ const AuthForm = (props) => {
             <Text h3>{props.title}</Text>
             <Input
                 placeholder="Email"
-                value={props.email}
+                value={email}
                 autoCapitalize="none"
                 autoCorrect={false}
-                onChangeText={(newValue) => props.setEmail(newValue)}
+                onChangeText={(newValue) => setEmail(newValue)}
             />
             <Input
                 placeholder="Password"
-                value={props.password}
-                onChangeText={(newValue) => props.setPassword(newValue)}
+                value={password}
+                onChangeText={(newValue) => setPassword(newValue)}
                 autoCapitalize="none"
                 autoCorrect={false}
                 secureTextEntry={true}
@@ -30,9 +30,9 @@ const AuthForm = (props) => {
             <Button
                 title={props.title}
                 onPress={() =>
-                    props.action({
-                        email: props.email,
-                        password: props.password,
+                    props.onSubmit({
+                        email: email,
+                        password: password,
                     })
                 }
             />
