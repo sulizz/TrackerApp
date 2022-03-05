@@ -14,6 +14,9 @@ import TrackDetailsScreen from "./src/screens/TrackDetailsScreen";
 import TrackListScreen from "./src/screens/TrackListScreen";
 
 import { Provider as AuthProvider } from "./src/context/AuthContext";
+
+import { setNavigator } from "./src/navigationRef";
+
 //top level navigation createSwitchNavigator which goes between or login flow or main flow
 const switchNavigator = createSwitchNavigator({
     //another grouping of screens, (another navigator)
@@ -49,7 +52,16 @@ const App = createAppContainer(switchNavigator);
 export default () => {
     return (
         <AuthProvider>
-            <App />
+            <App
+                ref={(navigator) => {
+                    setNavigator(navigator);
+                }}
+            />
         </AuthProvider>
     );
 };
+
+//ref={(nav) => {setNavigator(navigator)}};
+//App component is created entirely by react navigation
+//ref receives a arrow function which accepts a argument which is a navigator
+// ref is a function that gets called with the obj that allows us to navigate around.
