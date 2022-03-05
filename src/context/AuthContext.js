@@ -8,13 +8,13 @@ const authReducer = (state, action) => {
     switch (action.type) {
         case "add_error":
             return { ...state, errorMessage: action.payload };
-        case "signup":
+        case "signin":
             //if user signs up with email which gets error, then logs in successfully.
             //to remove the error msg we re-build our state obj so instead of ...state which copies data
             //errorMessage: "" which changes the error to empty string
             return { errorMessage: "", token: action.payload };
-        case "signin":
-            return { errorMessage: "", token: action.payload };
+        case "clear_error_message":
+            return { ...state, errorMessage: "" };
         default:
             return state;
     }
@@ -44,7 +44,7 @@ const signup = (dispatch) => {
                 password,
             });
             await AsyncStorage.setItem("token", response.data.token); // #1save it in local storage
-            dispatch({ type: "signup", payload: response.data.token }); // #2 dispatch the action
+            dispatch({ type: "signin", payload: response.data.token }); // #2 dispatch the action
             console.log("navigating to mainflow");
             navigate("TrackList"); // #3 navigate user to new flow
         } catch (err) {
@@ -84,9 +84,14 @@ const signout = (dispatch) => {
         //sign out
     };
 };
+//arrow functions
+//const a = (b,c) => a + b //implicit return
+const clearErrorMessage = (dispatch) => () => {
+    dispatch({ type: "clear_error_message" });
+};
 //export provier and context
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup: signup, signin: signin, signout: signout },
+    { signup: signup, signin: signin, signout: signout, clearErrorMessage },
     { token: null, errorMessage: "" }
 );

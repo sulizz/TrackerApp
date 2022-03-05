@@ -3,11 +3,19 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import Spacer from "../components/Spacer";
 import Greeting from "./Greeting";
+import { NavigationEvents } from "react-navigation";
+
 const AuthForm = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     return (
         <>
+            <NavigationEvents
+                onWillFocus={() => {
+                    setEmail("");
+                    setPassword("");
+                }}
+            />
             <Greeting />
             <Spacer />
             <Text h3>{props.title}</Text>
