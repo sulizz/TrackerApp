@@ -13,6 +13,8 @@ const authReducer = (state, action) => {
             //to remove the error msg we re-build our state obj so instead of ...state which copies data
             //errorMessage: "" which changes the error to empty string
             return { errorMessage: "", token: action.payload };
+        case "signout":
+            return { errorMessage: "", token: action.payload };
         case "clear_error_message":
             return { ...state, errorMessage: "" };
         default:
@@ -31,6 +33,16 @@ const authReducer = (state, action) => {
 //show error in state
 
 //action function that calls reducer  to modify state
+
+const tryLocalSignin = (dispatch) => async () => {
+    const token = await AsyncStorage.getItem("token");
+    if (token) {
+        dispatch({ type: "signin", payload: token });
+        navigate("TrackList");
+    } else {
+        navigate("Signup");
+    }
+};
 
 const signup = (dispatch) => {
     //inner function gets called inside our component.
@@ -66,7 +78,7 @@ const signin = (dispatch) => {
                 password: password,
             });
             //save data in local storage
-            // await AsyncStorage.setItem("token", response.data.token);
+            await AsyncStorage.setItem("token", response.data.token);
             //dispatch
             dispatch({ type: "signin", payload: response.data.token });
             navigate("TrackList");
@@ -79,11 +91,16 @@ const signin = (dispatch) => {
     };
 };
 
-const signout = (dispatch) => {
-    return () => {
-        //sign out
-    };
+const signout = (dispatch) => async () => {
+    try {
+        await AsyncStorage.removeItem("token");
+        dispatch({ type: "signout" });
+        navigate("Signin");
+    } catch (err) {
+        dispatch({ type: "add_error", payload: "Cannot Sign Out" });
+    }
 };
+
 //arrow functions
 //const a = (b,c) => a + b //implicit return
 const clearErrorMessage = (dispatch) => () => {
@@ -92,6 +109,13 @@ const clearErrorMessage = (dispatch) => () => {
 //export provier and context
 export const { Provider, Context } = createDataContext(
     authReducer,
-    { signup: signup, signin: signin, signout: signout, clearErrorMessage },
+    {
+        signup: signup,
+        signin: signin,
+        signout: signout,
+        clearErrorMessage,
+        tryLocalSignin,
+        signout,
+    },
     { token: null, errorMessage: "" }
 );
