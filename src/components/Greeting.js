@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { Text, StyleSheet } from "react-native";
 //morning --> 4am - 12pm
 //afternoon --> 12pm - 5pm
 //evening --> 5pm to 10pm
@@ -7,10 +8,10 @@ const Greeting = () => {
     const [greeting, setGreeting] = useState("");
 
     useEffect(() => {
-        setGreeting(greeting());
+        setGreeting(greetings());
     }, []);
 
-    const greeting = () => {
+    const greetings = () => {
         const date = parseInt(new Date().getHours());
         let message = "";
         if (date < 12) {
@@ -24,7 +25,7 @@ const Greeting = () => {
         return message;
     };
 
-    return <>{greeting}</>;
+    return <Text>{greeting}</Text>;
 };
 
 export default Greeting;

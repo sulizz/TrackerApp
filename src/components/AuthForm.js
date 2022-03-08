@@ -1,13 +1,23 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { Button, Input, Text } from "react-native-elements";
 import Spacer from "../components/Spacer";
+import Greeting from "./Greeting";
+import { NavigationEvents } from "react-navigation";
 
 const AuthForm = (props) => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     return (
-        <View style={styles.container}>
+        <>
+            <NavigationEvents
+                onWillFocus={() => {
+                    setEmail("");
+                    setPassword("");
+                }}
+            />
+            <Greeting />
+            <Spacer />
             <Text h3>{props.title}</Text>
             <Input
                 placeholder="Email"
@@ -24,8 +34,10 @@ const AuthForm = (props) => {
                 autoCorrect={false}
                 secureTextEntry={true}
             />
-            {props.state.errorMessage ? (
-                <Text>{props.state.errorMessage}</Text>
+            {props.errorMessage ? (
+                <Text style={styles.erroMessageStyle}>
+                    {props.errorMessage}
+                </Text>
             ) : null}
             <Button
                 title={props.title}
@@ -37,21 +49,14 @@ const AuthForm = (props) => {
                 }
             />
             <Spacer />
-            <TouchableOpacity
-                onPress={() => props.navigation.navigate(props.screenName)}
-            >
-                <Text style={{ color: "blue" }}>{props.buttonTitle}</Text>
-            </TouchableOpacity>
-        </View>
+        </>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        alignItems: "center",
-        justifyContent: "center",
-        marginBottom: 200,
+    erroMessageStyle: {
+        color: "red",
+        marginBottom: 16,
     },
 });
 
