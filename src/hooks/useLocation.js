@@ -8,24 +8,24 @@ import {
 export default (shouldTrack, callback) => {
     const [error, setError] = useState(null);
 
-    const startWatching = async () => {
-        let subscriber;
-        try {
-            await requestForegroundPermissionsAsync();
-            subscriber = await watchPositionAsync(
-                {
-                    accuracy: Accuracy.BestForNavigation,
-                    timeInterval: 1000,
-                    distanceInterval: 10,
-                },
-                callback
-            );
-        } catch (e) {
-            setError(e);
-        }
-    };
-
     useEffect(() => {
+        let subscriber;
+
+        const startWatching = async () => {
+            try {
+                await requestForegroundPermissionsAsync();
+                subscriber = await watchPositionAsync(
+                    {
+                        accuracy: Accuracy.BestForNavigation,
+                        timeInterval: 1000,
+                        distanceInterval: 10,
+                    },
+                    callback
+                );
+            } catch (e) {
+                setError(e);
+            }
+        };
         if (shouldTrack) {
             startWatching();
         } else {

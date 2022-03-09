@@ -11,9 +11,12 @@ import TrackForm from "../components/TrackForm";
 
 const TrackCreateScreen = ({ isFocused }) => {
     const { state, addLocation } = useContext(LocationContext);
-    const callback = useCallback((location) => {
-        addLocation(location, state.recording);
-    });
+    const callback = useCallback(
+        (location) => {
+            addLocation(location, state.recording);
+        },
+        [state.recording]
+    );
 
     const [error] = useLocation(isFocused || state.recording, callback);
 
