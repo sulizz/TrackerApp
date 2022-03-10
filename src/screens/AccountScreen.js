@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { View, Text, StyleSheet, Button } from "react-native";
 import { Context as AuthContext } from "../context/AuthContext";
 import { SafeAreaView } from "react-native";
+import { Feather } from "@expo/vector-icons";
 const AccountScreen = ({}) => {
     const { signout } = useContext(AuthContext);
     return (
@@ -18,4 +19,9 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 });
+
+AccountScreen.navigationOptions = {
+    title: "Settings",
+    tabBarIcon: <Feather name="settings" size={24} color="black" />,
+};
 export default AccountScreen;

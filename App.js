@@ -17,8 +17,19 @@ import { Provider as AuthProvider } from "./src/context/AuthContext";
 import { Provider as LocationProvider } from "./src/context/LocationContext";
 import { setNavigator } from "./src/navigationRef";
 import { Provider as TrackProvider } from "./src/context/TrackContext";
+import { FontAwesome5 } from "@expo/vector-icons";
 
 //top level navigation createSwitchNavigator which goes between or login flow or main flow
+const trackListFlow = createStackNavigator({
+    TrackList: TrackListScreen,
+    TrackDetails: TrackDetailsScreen,
+});
+
+trackListFlow.navigationOptions = {
+    title: "Your Tracks",
+    tabBarIcon: <FontAwesome5 name="running" size={24} color="black" />,
+};
+
 const switchNavigator = createSwitchNavigator({
     //another grouping of screens, (another navigator)
     //createStackNavigator is a sub navigator
@@ -40,11 +51,7 @@ const switchNavigator = createSwitchNavigator({
     ),
 
     mainFlow: createBottomTabNavigator({
-        trackListFlow: createStackNavigator({
-            TrackList: TrackListScreen,
-            TrackDetails: TrackDetailsScreen,
-        }),
-
+        trackListFlow,
         TrackCreate: TrackCreateScreen,
         Account: AccountScreen,
     }),

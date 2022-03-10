@@ -8,6 +8,7 @@ import { Context as LocationContext } from "../context/LocationContext";
 import useLocation from "../hooks/useLocation";
 import { withNavigationFocus } from "react-navigation";
 import TrackForm from "../components/TrackForm";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 const TrackCreateScreen = ({ isFocused }) => {
     const { state, addLocation } = useContext(LocationContext);
@@ -29,5 +30,17 @@ const TrackCreateScreen = ({ isFocused }) => {
         </SafeAreaView>
     );
 };
+
+TrackCreateScreen.navigationOptions = {
+    title: "Add Track",
+    tabBarIcon: (
+        <MaterialCommunityIcons
+            name="map-marker-plus-outline"
+            size={24}
+            color="black"
+        />
+    ),
+};
+
 const styles = StyleSheet.create({});
 export default withNavigationFocus(TrackCreateScreen);
